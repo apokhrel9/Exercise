@@ -1,0 +1,71 @@
+﻿
+<fieldset>
+    <legend>Create Customer</legend>
+    <div class="editor-label">
+        Customer Id
+    </div>
+    <div class="editor-field">
+        <input data-bind="value: CustomerId" />
+    </div>
+    <br />
+    <div class="editor-label">
+        Customer Name
+    </div>
+    <div class="editor-field">
+        <input data-bind="value: CustomerName" />
+    </div>
+    <br />
+    <div class="editor-label">
+        Contact Name
+    </div>
+    <div class="editor-field">
+        <input data-bind="value: ContactName" />
+    </div>
+    <br />
+    <div class="editor-label">
+        Address
+    </div>
+    <div class="editor-field">
+        <input data-bind="value: Address" />
+    </div>
+    <br />
+    <div class="editor-label">
+        City
+    </div>
+    <div class="editor-field">
+        <input data-bind="value: City" />
+    </div>
+    <br />
+    <div class="editor-label">
+        Postal Code
+    </div>
+    <div class="editor-field">
+        <input data-bind="value: PostalCode" />
+    </div>
+    <br />
+    <div class="editor-label">
+        Country
+    </div>
+    <div class="editor-field">
+        <input data-bind="value: Country" />
+    </div>
+    <br />
+    <p>
+        <button type="button" class="btn-primary" data-bind="click: SaveCustomer">
+            Save Customer To Database
+        </button>
+    </p>
+</fieldset>
+<br />
+<div>
+    <a href="@Url.Action("Index", "Customer")">Back to List</a>
+</div>
+@section Scripts {
+    @Scripts.Render("~/Scripts/ViewModels/CreateVM.js")
+}
+
+<style>
+    .validationMessage {
+        color: red;
+    }
+</style>

@@ -1,0 +1,107 @@
+﻿@model KnockoutMVC.Customer
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+
+<fieldset>
+    <legend>Delete Customer</legend>
+    <div class="editor-label">
+        Customer Id
+    </div>
+    <div class="editor-field">
+        <input data-bind="value: CustomerId" readonly="readonly" />
+    </div>
+    <br />
+    <div class="editor-label">
+        Customer Name
+    </div>
+    <div class="editor-field">
+        <input data-bind="value: CustomerName" />
+        </div>
+    <br />
+    <div class="editor-label">
+        Contact Name
+    </div>
+    <div class="editor-field">
+        <input data-bind="value: ContactName" />
+    </div>
+        <br />
+    <div class="editor-label">
+        Address
+    </div>
+    <div class="editor-field">
+        <input data-bind="value: Address" />
+    </div>
+        <br />
+    <div class="editor-label">
+        City
+    </div>
+    <div class="editor-field">
+        <input data-bind="value: City" />
+    </div>
+        <br />
+    <div class="editor-label">
+        Postal Code
+    </div>
+    <div class="editor-field">
+        <input data-bind="value: PostalCode" />
+    </div>
+        <br />
+    <div class="editor-label">
+        Country
+    </div>
+    <div class="editor-field">
+        <input data-bind="value: Country" />
+    </div>
+    <br />
+    <div>
+    <button type="button" class="btn-danger" data-bind="click: DeleteCustomer">Delete Customer</button>
+    </div>
+    <br />
+    <a href="@Url.Action("Index", "Customer")">Back to List</a>
+
+</fieldset>
+
+@section Scripts {
+ <script>
+     $(function () {
+         ko.applyBindings(DeleteVM);
+     });
+     var initialData = '@Html.Raw(ViewBag.InitialData)'; //get the raw json
+     var parsedJSON = $.parseJSON(initialData); //parse the json client side
+     var DeleteVM = {
+         Customers: ko.observableArray([]),
+         CustomerId: ko.observable(parsedJSON.CustomerId),
+         CustomerName: ko.observable(parsedJSON.CustomerName),
+         ContactName: ko.observable(parsedJSON.ContactName),
+         Address: ko.observable(parsedJSON.Address),
+         City: ko.observable(parsedJSON.City),
+         PostalCode: ko.observable(parsedJSON.PostalCode),
+         Country: ko.observable(parsedJSON.Country),
+         DeleteCustomer: function () {
+             $.ajax({
+                 url: '/Customer/Delete',
+                 type: 'post',
+                 dataType: 'json',
+                 data: ko.toJSON(this),
+                 contentType: 'application/json',
+                 success: function (result) {
+                 },
+                 error: function (err) {
+                     if (err.responseText == "Creation Failed")
+                     { window.location.href = '/Customer/Index/'; }
+                     else {
+                         alert("Status:" + err.responseText);
+                         window.location.href = '/Customer/Index/';;
+                     }
+                 },
+                 complete: function () {
+                     window.location.href = '/Customer/Index/';
+                 }
+             });
+         }
+     };
+    </script>
+} 

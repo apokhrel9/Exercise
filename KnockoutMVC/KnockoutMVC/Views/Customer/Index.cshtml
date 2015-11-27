@@ -1,0 +1,36 @@
+﻿@model IEnumerable<KnockoutMVC.Customer>
+
+<h2>Customers List</h2>
+<p><a href="@Url.Action("Create", "Customer")">Create Customer</a></p>
+<table class="Data table">
+    <thead>
+        <tr>
+            <th>Customer Id</th>
+            <th>Cutomer Name</th>
+            <th>Contact Name</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>Postal Code</th>
+            <th>Country</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: Customers">
+        <tr>
+            <td data-bind="text: CustomerId"></td>
+            <td data-bind="text: CustomerName"></td>
+            <td data-bind="text: ContactName"></td>
+            <td data-bind="text: Address"></td>
+            <td data-bind="text: City"></td>
+            <td data-bind="text: PostalCode"></td>
+            <td data-bind="text: Country"></td>
+            <td>
+                <a data-bind="click: editCustomer">Edit</a>
+                <a data-bind="click: deleteCustomer">Delete</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+@section Scripts {
+    @Scripts.Render("~/Scripts/ViewModels/CustomerListVM.js")
+}

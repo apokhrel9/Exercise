@@ -1,0 +1,118 @@
+﻿
+<fieldset>
+    <legend>Edit Customer</legend>
+    <div class="editor-label">
+        Customer Id
+    </div>
+    <div class="editor-field">
+        <input data-bind="value: CustomerId" readonly="readonly" />
+    </div>
+    <br />
+    <div class="editor-label">
+        Customer Name
+    </div>
+    <div class="editor-field">
+        <input data-bind="value: CustomerName" />
+    </div>
+    <br />
+    <div class="editor-label">
+        Contact Name
+    </div>
+    <div class="editor-field">
+        <input data-bind="value: ContactName" />
+    </div>
+    <br />
+    <div class="editor-label">
+        Address
+    </div>
+    <div class="editor-field">
+        <input data-bind="value: Address" />
+    </div>
+    <br />
+    <div class="editor-label">
+        City
+    </div>
+    <div class="editor-field">
+        <input data-bind="value: City" />
+    </div>
+    <br />
+    <div class="editor-label">
+        Postal Code
+    </div>
+    <div class="editor-field">
+        <input data-bind="value: PostalCode" />
+    </div>
+    <br />
+    <div class="editor-label">
+        Country
+    </div>
+    <div class="editor-field">
+        <input data-bind="value: Country" />
+    </div>
+    <br />
+    <div>
+        <button class="btn-primary" type="button" data-bind="click: SaveCustomer">
+            Save Customer To Database
+        </button>
+    </div>
+</fieldset>
+<br />
+<div>
+    <a href="@Url.Action("Index", "Customer")">Back to List</a>
+</div>
+@section Scripts {
+   <script>
+       $(function () {
+           ko.applyBindings(EditVM);
+       });
+       var initialData = '@Html.Raw(ViewBag.InitialData)'; //get the raw json
+       var parsedJSON = $.parseJSON(initialData); //parse the json client side
+       var EditVM = {
+
+           Customers: ko.observableArray([]),
+           CustomerId: ko.observable(parsedJSON.CustomerId).extend({ required: true, maxLength: 10 }),
+           CustomerName: ko.observable(parsedJSON.CustomerName).extend({ required: true, maxLength: 50 }),
+           ContactName: ko.observable(parsedJSON.ContactName).extend({ required: true, maxLength: 50 }),
+           Address: ko.observable(parsedJSON.Address).extend({ required: true, maxLength: 50 }),
+           City: ko.observable(parsedJSON.City).extend({ required: true, maxLength: 50 }),
+           PostalCode: ko.observable(parsedJSON.PostalCode).extend({ required: true, maxLength: 10 }),
+           Country: ko.observable(parsedJSON.Country).extend({ required: true, maxLength: 50 }),
+           SaveCustomer: function () {
+
+               if (!(EditVM.isValid())) {
+
+                   errors = ko.validation.group(EditVM);
+                   errors.showAllMessages();
+               }
+               else {
+                   $.ajax({
+                       url: '/Customer/Edit',
+                       type: 'post',
+                       dataType: 'json',
+                       data: ko.toJSON(this),
+                       contentType: 'application/json',
+                       success: function (result) {
+                       },
+                       error: function (err) {
+                           if (err.responseText == "Creation Failed")
+                           { window.location.href = '/Customer/Index/'; }
+                           else {
+                               alert("Status: " + err.responseText);
+                               window.location.href = '/Customer/Index/';;
+                           }
+                       },
+                       complete: function () {
+                           window.location.href = '/Customer/Index/';
+                       }
+                   });
+               }
+           }
+       };
+    </script>
+}
+
+<style>
+    .validationMessage {
+        color: red;
+    }
+</style>
